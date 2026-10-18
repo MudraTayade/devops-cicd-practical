@@ -1,0 +1,42 @@
+
+name: CI-CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Verify HTML application
+        run: |
+          test -f index.html
+          grep -q "DevOps CI/CD Pipeline" index.html
+          echo "HTML verification passed"
+
+      - name: Build application
+        run: |
+          mkdir -p dist
+          cp index.html dist/index.html
+          test -f dist/index.html
+          echo "Build completed successfully"
+
+      - name: Simulate deployment
+        run: |
+          echo "Deployment simulation started"
+          test -f dist/index.html
+          echo "Deployment simulation completed"
+
+      - name: Pipeline result
+        run: echo "CI/CD pipeline completed successfully"
